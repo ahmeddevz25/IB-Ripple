@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\ContactMessageController;
 */
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
+Route::get('/view-flipbook/{type}', [IndexController::class, 'flipbook'])->name('flipbook');
 Route::get('page/{sub_title}', [IndexController::class, 'page'])->name('page');
 Route::get('events/{slug}', [IndexController::class, 'eventmedia'])->name('eventmedia');
 

@@ -202,7 +202,7 @@
     }
 </style>
 
-<div class="p-0 logo-header">
+<div class="p-0 logo-header sticky-top" style="z-index: 1030; background-color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);">
     <nav class="navbar navbar-expand-lg bg-white navbar-light nav-header">
         <div class="container">
             <a href="{{ url('/') }}" class="navbar-brand">
@@ -218,7 +218,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <!-- Navigation Links -->
                 <div class="navbar-nav ml-auto mr-4 align-items-center">
-                    <a href="{{ url('/') }}" class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
+                    <a href="{{ url('/') }}"
+                        class="nav-item nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
 
 
                     @foreach ($navPages as $page)
@@ -233,74 +234,79 @@
                                 </a>
 
                                 {{-- MOBILE: Split Link (Text Link + Toggle Arrow) --}}
-                                <div class="d-flex align-items-center justify-content-between d-lg-none">
-                                    <a href="{{ route('page', $page->sub_title) }}" class="nav-link">
+                                <div class="d-flex align-items-center justify-content-center d-lg-none">
+                                    <a href="{{ route('page', $page->sub_title) }}" class="nav-link text-nowrap">
                                         {{ $page->page_title }}
                                     </a>
-                                    <a href="#" class="nav-link dropdown-toggle px-3" role="button" data-bs-toggle="dropdown"
-                                        {{-- No explicit target needed if default works, but with nested div: --}}
-                                        aria-expanded="false">
+                                    <a href="#" class="nav-link dropdown-toggle px-2" style="margin-left: 0;"
+                                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     </a>
                                 </div>
 
                                 <div class="dropdown-menu m-0">
                                     @foreach ($page->children as $child)
                                         @if ($child->children->count())
-                                                    {{-- CHILD WITH SUBMENU --}}
-                                                    <div class="dropdown-submenu">
+                                            {{-- CHILD WITH SUBMENU --}}
+                                            <div class="dropdown-submenu">
 
-                                                        <a href="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document
-                                            ? route('page', $child->sub_title)
-                                            : asset('storage/' . $child->document) }}" class="dropdown-item"
-                                                            target="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document ? '_self' : '_blank' }}">
-                                                            {{ $child->page_title }}
+                                                <a href="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document
+                                                    ? route('page', $child->sub_title)
+                                                    : asset('storage/' . $child->document) }}"
+                                                    class="dropdown-item"
+                                                    target="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document ? '_self' : '_blank' }}">
+                                                    {{ $child->page_title }}
+                                                </a>
+
+                                                <div class="dropdown-menu">
+
+                                                    @foreach ($child->children as $grandchild)
+                                                        <a href="{{ Str::lower(trim($grandchild->page_title)) === 'magazine & yearbook' || !$grandchild->document
+                                                            ? route('page', $grandchild->sub_title)
+                                                            : asset('storage/' . $grandchild->document) }}"
+                                                            class="dropdown-item"
+                                                            target="{{ Str::lower(trim($grandchild->page_title)) === 'magazine & yearbook' || !$grandchild->document ? '_self' : '_blank' }}">
+                                                            {{ $grandchild->page_title }}
                                                         </a>
+                                                    @endforeach
 
-                                                        <div class="dropdown-menu">
-
-                                                            @foreach ($child->children as $grandchild)
-                                                                            <a href="{{ Str::lower(trim($grandchild->page_title)) === 'magazine & yearbook' || !$grandchild->document
-                                                                ? route('page', $grandchild->sub_title)
-                                                                : asset('storage/' . $grandchild->document) }}"
-                                                                                class="dropdown-item"
-                                                                                target="{{ Str::lower(trim($grandchild->page_title)) === 'magazine & yearbook' || !$grandchild->document ? '_self' : '_blank' }}">
-                                                                                {{ $grandchild->page_title }}
-                                                                            </a>
-                                                            @endforeach
-
-                                                        </div>
-                                                    </div>
+                                                </div>
+                                            </div>
                                         @else
-                                                    {{-- NORMAL CHILD --}}
-                                                    <a href="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document
-                                            ? route('page', $child->sub_title)
-                                            : asset('storage/' . $child->document) }}" class="dropdown-item"
-                                                        target="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document ? '_self' : '_blank' }}">
-                                                        {{ $child->page_title }}
-                                                    </a>
+                                            {{-- NORMAL CHILD --}}
+                                            <a href="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document
+                                                ? route('page', $child->sub_title)
+                                                : asset('storage/' . $child->document) }}"
+                                                class="dropdown-item"
+                                                target="{{ Str::lower(trim($child->page_title)) === 'magazine & yearbook' || !$child->document ? '_self' : '_blank' }}">
+                                                {{ $child->page_title }}
+                                            </a>
                                         @endif
                                     @endforeach
 
                                 </div>
                             </div>
                         @else
-                                    {{-- TOP LEVEL SINGLE PAGE --}}
-                                    <a href="{{ Str::lower(trim($page->page_title)) === 'magazine & yearbook' || !$page->document
-                            ? route('page', $page->sub_title)
-                            : asset('storage/' . $page->document) }}" class="nav-item nav-link text-dark"
-                                        target="{{ Str::lower(trim($page->page_title)) === 'magazine & yearbook' || !$page->document ? '_self' : '_blank' }}">
-                                        {{ $page->page_title }}
-                                    </a>
+                            {{-- TOP LEVEL SINGLE PAGE --}}
+                            <a href="{{ Str::lower(trim($page->page_title)) === 'magazine & yearbook' || !$page->document
+                                ? route('page', $page->sub_title)
+                                : asset('storage/' . $page->document) }}"
+                                class="nav-item nav-link text-dark"
+                                target="{{ Str::lower(trim($page->page_title)) === 'magazine & yearbook' || !$page->document ? '_self' : '_blank' }}">
+                                {{ $page->page_title }}
+                            </a>
                         @endif
                     @endforeach
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="d-none d-lg-flex align-items-center">
-                    <a href="{{ asset('index/assets/images/IB-Ripple-2026-Call-for-Proposals-Booklet-update.pdf') }}"
-                        class="btn btn-ib-green mr-2" target="_blank">IB Ripple Global Conference 2026</a>
-                    <a href="{{ asset('index/assets/images/Abstract-Book.pdf') }}"
-                        class="btn btn-ib-green btn-submit-proposal" target="_blank">Abstract Book</a>
+                <hr class="d-lg-none w-100 my-2" style="border-color: #eee;">
+                <div
+                    class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center mt-3 mt-lg-0 pb-4 pb-lg-0 px-4 px-lg-0">
+                    <a href="{{ route('flipbook', 'conference-2026') }}"
+                        class="btn btn-ib-green mb-3 mb-lg-0 mr-lg-3 py-2" target="_blank">IB Ripple Global Conference
+                        2026</a>
+                    <a href="{{ route('flipbook', 'conference-compendium') }}"
+                        class="btn btn-ib-green btn-submit-proposal" target="_blank">Conference Compendium</a>
                 </div>
             </div>
         </div>
@@ -308,10 +314,10 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const dropdowns = document.querySelectorAll('.dropdown-submenu > a');
         dropdowns.forEach((el) => {
-            el.addEventListener('click', function (e) {
+            el.addEventListener('click', function(e) {
                 if (window.innerWidth < 992) {
                     e.preventDefault();
                     const parent = this.parentElement;
@@ -323,11 +329,12 @@
         // ✅ Fix: Manual Mobile Dropdown Toggle (if data-bs-toggle fails due to nesting)
         const mobileToggles = document.querySelectorAll('.d-lg-none .dropdown-toggle');
         mobileToggles.forEach(toggle => {
-            toggle.addEventListener('click', function (e) {
+            toggle.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation(); // prevent default BS behavior
 
-                const dropdownMenu = this.closest('.nav-item.dropdown').querySelector('.dropdown-menu');
+                const dropdownMenu = this.closest('.nav-item.dropdown').querySelector(
+                    '.dropdown-menu');
                 if (dropdownMenu) {
                     // Toggle show class on menu
                     if (dropdownMenu.classList.contains('show')) {
@@ -335,14 +342,16 @@
                         this.setAttribute('aria-expanded', 'false');
                     } else {
                         // Close other open menus in mobile (optional, but good UX)
-                        document.querySelectorAll('.navbar-nav .dropdown-menu.show').forEach(m => {
-                            if (m !== dropdownMenu) {
-                                m.classList.remove('show');
-                                // Find its toggle and reset
-                                const t = m.closest('.nav-item.dropdown').querySelector('.dropdown-toggle');
-                                if (t) t.setAttribute('aria-expanded', 'false');
-                            }
-                        });
+                        document.querySelectorAll('.navbar-nav .dropdown-menu.show').forEach(
+                            m => {
+                                if (m !== dropdownMenu) {
+                                    m.classList.remove('show');
+                                    // Find its toggle and reset
+                                    const t = m.closest('.nav-item.dropdown').querySelector(
+                                        '.dropdown-toggle');
+                                    if (t) t.setAttribute('aria-expanded', 'false');
+                                }
+                            });
 
                         dropdownMenu.classList.add('show');
                         this.setAttribute('aria-expanded', 'true');

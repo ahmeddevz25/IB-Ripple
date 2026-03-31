@@ -42,6 +42,31 @@ class IndexController extends Controller
         return view('index.index', compact('navPages', 'sliders', 'subTitles'));
     }
 
+    public function flipbook($type)
+    {
+        $navPages = Page::where('is_navbar', 1)
+            ->whereNull('parent_id')
+            ->with([
+                'children' => function ($query) {
+                    $query->where('is_navbar', 1)->orderBy('sort_order');
+                }
+            ])
+            ->orderBy('sort_order')
+            ->get();
+
+        if ($type === 'conference-2026') {
+            $pdf_url = asset('index/assets/images/IB-Ripple-2026-Call-for-Proposals-Booklet-update.pdf');
+            $title = 'IB Ripple Global Conference 2026';
+        } elseif ($type === 'conference-compendium') {
+            $pdf_url = asset('index/assets/images/conference-compendium.pdf');
+            $title = 'Conference Compendium';
+        } else {
+            abort(404);
+        }
+
+        return view('index.flipbook', compact('navPages', 'pdf_url', 'title'));
+    }
+
     public function page($sub_title)
     {
         $page = Page::with([
