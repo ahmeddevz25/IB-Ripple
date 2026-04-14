@@ -302,7 +302,7 @@
                 <hr class="d-lg-none w-100 my-2" style="border-color: #eee;">
                 <div
                     class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center mt-3 mt-lg-0 pb-4 pb-lg-0 px-4 px-lg-0">
-                    <a href="{{ route('flipbook', 'conference-2026') }}"
+                    <a href="{{ asset('index/assets/images/conference-compendium.pdf') }}"
                         class="btn btn-ib-green mb-3 mb-lg-0 mr-lg-3 py-2" target="_blank">IB Ripple Global Conference
                         2026</a>
                     <a href="{{ route('flipbook', 'conference-compendium') }}"

@@ -1,9 +1,9 @@
 @extends('index.layout')
 @section('content')
     <div class="container-fluid mt-4 mb-3">
-        <div class="py-2 text-center font-weight-bold call-proposal-banner">
+        {{-- <div class="py-2 text-center font-weight-bold call-proposal-banner">
             Call for Proposal Now Open – Become a part of the IB Ripple Global Conference 2026
-        </div>
+        </div> --}}
 
         <div class="text-center mt-4 mx-auto intro-text-wrapper">
             <h5 class="intro-text-content">
